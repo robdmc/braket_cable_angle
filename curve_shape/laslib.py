@@ -88,7 +88,7 @@ class Las:
         The cleaned up data from the las file
         """
         if self._df_preloaded is not None:
-            return self._df_preloaded
+            return self._df_preloaded.copy()
         else:
             df = self.df_raw[['time', self.angle_field, self.value_field]]
             df = df.rename(columns={self.angle_field: 'bearing', self.value_field: 'signal'})
@@ -97,7 +97,7 @@ class Las:
             if self._normalize:
                 median_val = df[df.signal.abs() > 1e-6].signal.median()
                 df.loc[:, 'signal'] = df.signal * 500 / median_val
-            return df
+            return df.copy()
 
     def section(self, name: str, min_time: float, max_time: float) -> 'Las':
         """
