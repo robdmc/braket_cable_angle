@@ -16,20 +16,41 @@ class Las:
             angle_field: str = 'rb_sl',
             value_field: str = 'freq_emf_sl',
             normalize: bool = True,
+            positive_angles: bool = False,
             df: Optional[pd.DataFrame] = None,
     ) -> None:
+        """
+        This class manges the handling of las files.  You can name each
+        Las object with a desscriptive name (defaults to the filename).
+
+        From there, you can use the .define_section() method to create a
+        time slice of the data in the object.  A new Las object containing
+        only data from that timeslice can then be accessed using the
+        .section() method.
+
+        Here is an example:
+
+            las = Las(file_name=my_file, name='all_data')
+            display(las.plot_time())
+
+            las.define_section('first_half', 0, 277)
+            las.define_section('second_half', 351, 482)
+
+            las.section('first_half').plot_time()
+            las.section('second_half').plot_time()
+        """
         self.file_name = file_name
         self.angle_field = angle_field
         self.value_field = value_field
         self._normalize = normalize
-        self._sections = {}
         self._df_preloaded = df
         self._name = name
+        self._positive_angles = positive_angles
 
     @lru_cache()
     def read_las(self, input_filename: str) -> pd.DataFrame:
         """
-        Return a dataframe from a .las file
+        Open a .las file and parse it into a dataframe
         """
         rex_header = re.compile(r'#\s+(TIME.*)')
 
@@ -56,65 +77,57 @@ class Las:
 
     @property
     def df_raw(self) -> pd.DataFrame:
+        """
+        The raw data from the las file
+        """
         return self.read_las(self.file_name)
 
     @property
     def df(self) -> pd.DataFrame:
+        """
+        The cleaned up data from the las file
+        """
         if self._df_preloaded is not None:
             return self._df_preloaded
         else:
             df = self.df_raw[['time', self.angle_field, self.value_field]]
             df = df.rename(columns={self.angle_field: 'bearing', self.value_field: 'signal'})
-            df.loc[:, 'bearing'] = df.bearing + 180.
+            if self._positive_angles:
+                df.loc[:, 'bearing'] = df.bearing + 180.
             if self._normalize:
                 median_val = df[df.signal.abs() > 1e-6].signal.median()
                 df.loc[:, 'signal'] = df.signal * 500 / median_val
             return df
 
-    def plot_time(self) -> hv.Overlay:
+    def section(self, name: str, min_time: float, max_time: float) -> 'Las':
         """
-        Makes a time plot of all the data in this file.
-        Args:
-            If section is defined, it must refer to an already created section
-        """
-        df = self.df
-        c1 = hv.Curve((df.time, df.signal), 'Time', 'Value', label='Scaled Signal')
-        c1 *= hv.Scatter(c1)
-        c2 = hv.Curve((df.time, df.bearing), 'Time', 'Value', label='Bearing')
-        c2 *= hv.Scatter(c2)
-        return c1 * c2
-
-    def define_section(self, slug, min_time, max_time) -> 'Las':
-        """
-        Take a time slice of the input frame and create a tagged frame from
-        those values.  This frame will be placed in an attribute with a name
-        matching the f'df_{slug}'.
+        Return a new Las object based on the provided section name.
         """
         df = self.df[(self.df.time >= min_time) & (self.df.time <= max_time)]
-        self._sections[slug] = df
-
-    def section(self, slug: str, name=None) -> 'Las':
-        if slug not in self._sections:
-            raise ValueError(f'{slug} not in {list(self._sections.keys())}')
         if name is None:
-            name = f'{self.name}.{slug}'
-        else:
-            name = name
+            name = f'{self.name}.{name}'
         return self.__class__(
             file_name=self.file_name,
             angle_field=self.angle_field,
             value_field=self.value_field,
             normalize=self._normalize,
-            df=self._sections[slug],
+            df=df,
+            positive_angles=self._positive_angles,
             name=name,
         )
 
     @property
     def _default_name(self):
+        """
+        Return the default_name of this object
+        """
         return f'{os.path.basename(self.file_name)}'
 
     @property
     def name(self):
+        """
+        Return the name of this object
+        """
         out = self._default_name
         if self._name:
             out = self._name
@@ -126,17 +139,25 @@ class Las:
     def __repr__(self):
         return self.__str__()
 
+    def plot_time(self) -> hv.Overlay:
+        """
+        Makes a time plot of all the data in this file.
+        """
+        df = self.df
+        c1 = hv.Curve((df.time, df.signal), 'Time', self.name, label='Scaled Signal')
+        c1 *= hv.Scatter(c1)
+        c2 = hv.Curve((df.time, df.bearing), 'Time', self.name, label='Bearing')
+        c2 *= hv.Scatter(c2)
+        return c1 * c2
 
-
-
-
-
-
-
-
-
-
-
-
-
+    def plot_bearing(self) -> hv.Overlay:
+        """
+        Makes a time plot of all the data in this file.
+        """
+        df = self.df
+        c1 = hv.Curve((df.time, df.signal), 'Time', self.name, label='Scaled Signal')
+        c1 *= hv.Scatter(c1)
+        c2 = hv.Curve((df.time, df.bearing), 'Time', self.name, label='Bearing')
+        c2 *= hv.Scatter(c2)
+        return c1 * c2
 
