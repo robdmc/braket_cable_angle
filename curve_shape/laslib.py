@@ -18,10 +18,14 @@ class Las:
             normalize: bool = True,
             positive_angles: bool = False,
             df: Optional[pd.DataFrame] = None,
+            **kwargs
     ) -> None:
         """
         This class manges the handling of las files.  You can name each
         Las object with a desscriptive name (defaults to the filename).
+
+
+        Any extra kwargs are attached as attributes
 
         From there, you can use the .define_section() method to create a
         time slice of the data in the object.  A new Las object containing
@@ -39,6 +43,9 @@ class Las:
             las.section('first_half').plot_time()
             las.section('second_half').plot_time()
         """
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
         self.file_name = file_name
         self.angle_field = angle_field
         self.value_field = value_field
@@ -99,7 +106,7 @@ class Las:
                 df.loc[:, 'signal'] = df.signal * 500 / median_val
             return df.copy()
 
-    def section(self, name: str, min_time: float, max_time: float) -> 'Las':
+    def section(self, name: str, min_time: float, max_time: float, **kwargs) -> 'Las':
         """
         Return a new Las object based on the provided section name.
         """
@@ -114,6 +121,7 @@ class Las:
             df=df,
             positive_angles=self._positive_angles,
             name=name,
+            **kwargs
         )
 
     @property
