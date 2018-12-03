@@ -24,6 +24,7 @@ dependencies:
   - distributed=1.21.8=py36_0
   - entrypoints=0.2.3=py36_1
   - fastcache=1.0.2=py36_0
+  - freetype=2.8.1=0
   - george=0.3.1=py36h7127e17_0
   - gmp=6.1.2=0
   - gmpy2=2.0.8=py36_1
@@ -46,6 +47,7 @@ dependencies:
   - jupyterlab_launcher=0.10.5=py36_0
   - krb5=1.14.6=0
   - libnetcdf=4.6.1=2
+  - libpng=1.6.34=0
   - libsodium=1.0.16=0
   - libtiff=4.0.9=0
   - llvmlite=0.23.0=py36_1
@@ -75,6 +77,7 @@ dependencies:
   - patsy=0.5.0=py36_0
   - pexpect=4.5.0=py36_0
   - pickleshare=0.7.4=py36_0
+  - pillow=5.1.0=py36_0
   - pluggy=0.6.0=py_0
   - prompt_toolkit=1.0.15=py36_0
   - psutil=5.4.5=py36_0
@@ -115,20 +118,19 @@ dependencies:
   - zlib=1.2.11=h470a237_2
   - blas=1.0=mkl
   - ca-certificates=2018.03.07=0
-  - cairo=1.14.12=hc4e6be7_4
+  - cairo=1.14.12=hab642c4_1
   - certifi=2018.10.15=py36_0
   - curl=7.62.0=ha441bb4_0
   - cycler=0.10.0=py36hfc81398_0
   - cython=0.28.2=py36h1de35cc_0
   - expat=2.2.6=h0a44026_0
-  - fontconfig=2.13.0=h5d5b041_1
-  - freetype=2.9.1=hb4e5f40_0
+  - fontconfig=2.12.6=h9850fc5_0
   - fribidi=1.0.5=h1de35cc_0
   - gettext=0.19.8.1=h15daf44_3
-  - glib=2.56.2=hd9629dc_0
+  - glib=2.53.6=h33f6a65_2
   - graphite2=1.3.12=h2098e52_2
-  - graphviz=2.40.1=hefbbd9a_2
-  - harfbuzz=1.8.8=hb8d4a28_0
+  - graphviz=2.40.1=h0a44026_0
+  - harfbuzz=1.7.6=h08e020e_0
   - icu=58.2=h4b95b61_1
   - intel-openmp=2018.0.0=8
   - kiwisolver=1.0.1=py36h792292d_0
@@ -140,10 +142,9 @@ dependencies:
   - libgfortran=3.0.1=h93005f0_2
   - libgfortran-ng=3.0.1=h93005f0_2
   - libiconv=1.15=hdd342a3_7
-  - libpng=1.6.35=ha441bb4_0
   - libssh2=1.8.0=ha12b0ac_4
   - libxml2=2.9.8=hab757c2_1
-  - matplotlib=3.0.1=py36h54f8f79_0
+  - matplotlib=2.2.2=py36ha7267d0_0
   - metis=5.1.0=h0a44026_4
   - mkl=2018.0.3=1
   - mkl-service=1.1.2=py36h6b9c3cc_4
@@ -153,9 +154,8 @@ dependencies:
   - numpy=1.15.1=py36h6a91979_0
   - numpy-base=1.15.1=py36h8a80b8c_0
   - openssl=1.1.1=h1de35cc_0
-  - pango=1.42.4=h060686c_0
+  - pango=1.42.0=h0f8274a_0
   - pcre=8.42=h378b8a2_0
-  - pillow=5.3.0=py36hb68e598_0
   - pip=18.1=py36_0
   - pixman=0.34.0=hca0a616_3
   - pygraphviz=1.3=py36h1de35cc_1
@@ -166,4 +166,76 @@ dependencies:
   - sqlite=3.25.3=ha441bb4_0
   - tk=8.6.8=ha441bb4_0
   - xz=5.2.4=h1de35cc_4
+  - pip:
+    - alabaster==0.7.11
+    - altair==2.0.1
+    - asn1crypto==0.24.0
+    - babel==2.6.0
+    - beautifulsoup4==4.6.3
+    - braket-daq==0.1.18
+    - cachetools==2.1.0
+    - cffi==1.11.5
+    - chardet==3.0.4
+    - coverage==4.5.1
+    - cryptography==2.3
+    - cyordereddict==1.0.0
+    - dataclasses==0.6
+    - docutils==0.14
+    - easier==0.6.0
+    - emcee==2.2.1
+    - falcon==1.4.1
+    - flake8==3.5.0
+    - fleming==0.4.6
+    - gatspy==0.3
+    - google-api-core==1.3.0
+    - google-auth==1.5.1
+    - google-cloud-core==0.28.1
+    - google-cloud-firestore==0.29.0
+    - googleapis-common-protos==1.5.3
+    - grpcio==1.14.2
+    - gspread==3.0.0
+    - gunicorn==19.8.1
+    - holoviews==1.10.7
+    - httplib2==0.11.3
+    - hug==2.4.0
+    - idna==2.6
+    - imagesize==1.0.0
+    - joblib==0.11
+    - mccabe==0.6.1
+    - mock==2.0.0
+    - mpld3==0.3
+    - msgpack==0.5.6
+    - networkx==2.2
+    - nose==1.3.7
+    - oandapy==0.1
+    - oauth2client==4.1.2
+    - pandashells==0.1.8
+    - pbr==4.2.0
+    - pdvega==0.1
+    - protobuf==3.6.1
+    - pyasn1==0.4.3
+    - pyasn1-modules==0.2.1
+    - pycodestyle==2.3.1
+    - pycparser==2.18
+    - pyflakes==1.6.0
+    - pymc3==3.5
+    - python-mimeparse==1.6.0
+    - pyviz-comms==0.6.0
+    - requests==2.18.4
+    - rsa==3.4.2
+    - schemdraw==0.3.1
+    - seaborn==0.8.1
+    - snowballstemmer==1.2.1
+    - sphinx==1.7.6
+    - sphinx-rtd-theme==0.4.0
+    - sphinxcontrib-websupport==1.1.0
+    - supersmoother==0.4
+    - theano==1.0.2
+    - tqdm==4.23.4
+    - typed-ast==1.1.0
+    - typing==3.6.4
+    - urllib3==1.22
+    - vega3==0.13.0
+    - werkzeug==0.14.1
+    - wrapt==1.10.11
 prefix: /Users/rob/miniconda/envs/viz
